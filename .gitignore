@@ -1,0 +1,162 @@
+# ============================
+#  Java + Maven base ignore
+# ============================
+
+# Maven
+/target/
+/pom.xml.tag
+/pom.xml.releaseBackup
+/pom.xml.versionsBackup
+/logs/
+/dependency-reduced-pom.xml
+/build.log
+!src/**/target/
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+mvnw
+mvnw.cmd
+
+# ============================
+#  General
+# ============================
+*.class
+*.log
+*.out
+*.tmp
+*.swp
+*.bak
+*.old
+*.orig
+*.rej
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ============================
+#  OS / System
+# ============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+$RECYCLE.BIN/
+
+# ============================
+#  IDE-specific
+# ============================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+.tmp/
+
+# VS Code
+.vscode/
+.history/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+build/
+nbactions.xml
+nb-configuration.xml
+
+# ============================
+#  Tests / Coverage
+# ============================
+*.exec
+*.ec
+*.coverage
+*.coverage.xml
+/test-output/
+/surefire-reports/
+/failsafe-reports/
+/jacoco.exec
+/jacoco-it.exec
+/jacoco.csv
+/jacoco.xml
+
+# ============================
+#  OS / Environment
+# ============================
+.env
+.env.local
+.env.*.local
+*.env
+*.pid
+*.seed
+*.lock
+*.bak
+
+# ============================
+#  Logs / Temp
+# ============================
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+hs_err_pid*
+replay_pid*
+
+# ============================
+#  Tools / Build artifacts
+# ============================
+/target/
+/build/
+/out/
+/dist/
+/classes/
+/dependency-reduced-pom.xml
+/.flattened-pom.xml
+.mvn/timing.properties
+
+# ============================
+#  Miscellaneous
+# ============================
+*.idea_modules
+*.factorypath
+.gradle/
+.cache/
+.apt_generated/
+.annotation-processor/
+
+# ============================
+#  Optional: Docker / Compose
+# ============================
+/docker-compose.override.yml
+/docker-data/
+/.docker/
+
+# ============================
+#  Optional: CI / Scripts
+# ============================
+/reports/
+/tmp/
+/scripts/local-test.sh
+/test-results/
+
+/.vscode/
