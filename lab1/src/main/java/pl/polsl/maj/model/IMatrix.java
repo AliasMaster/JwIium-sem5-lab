@@ -1,32 +1,107 @@
 package pl.polsl.maj.model;
 import pl.polsl.maj.exceptions.MatrixException;
 
+/**
+ * Abstract matrix model defining common matrix operations. Concrete
+ * implementations must provide storage and basic getters/setters.
+ * 
+ * @author piotr.maj
+ * @version 1.0.0
+ */
 public abstract class IMatrix  {
+    /** Number of rows in the matrix (may be zero for an empty matrix). */
     protected int rows;
+
+    /** Number of columns in the matrix (may be zero for an empty matrix). */
     protected int cols;
 
+    /**
+     * Protected default constructor for subclasses.
+     * Implementations may initialize storage in their own constructors.
+     */
+    protected IMatrix() {
+        // explicit default constructor
+    }
+
+    /**
+     * Get number of rows.
+     *
+     * @return number of rows
+     */
     public int getRows() {
         return rows;
     }
     
+    /**
+     * Get number of columns.
+     *
+     * @return number of columns
+     */
     public int getCols() {
         return cols;
     }
     
+    /**
+     * Check whether the matrix is square.
+     *
+     * @return {@code true} when rows == cols
+     */
     public boolean isSquare() {
         return cols == rows;
     }
     
+    /**
+     * Get value at given row/column.
+     *
+     * @param r row index (0-based)
+     * @param c column index (0-based)
+     * @return stored value
+     * @throws MatrixException when indices are invalid
+     */
     public abstract double get(int r, int c) throws MatrixException;
     
+    /**
+     * Set value at given row/column.
+     *
+     * @param r row index (0-based)
+     * @param c column index (0-based)
+     * @param value value to store
+     * @throws MatrixException when indices are invalid
+     */
     public abstract void set(int r, int c, double value) throws MatrixException;    
 
+    /**
+     * Initialize matrix with given size.
+     *
+     * @param r number of rows
+     * @param c number of columns
+     * @throws MatrixException when dimensions are invalid
+     */
     public abstract void init(int r, int c) throws MatrixException;
 
+    /**
+     * Initialize matrix from a 2D array.
+     *
+     * @param data 2D array with matrix values
+     * @throws MatrixException when provided data is invalid
+     */
     public abstract void init(double[][] data) throws MatrixException;
 
+    /**
+     * Factory method to create a new IMatrix instance from raw data.
+     *
+     * @param data 2D array with matrix contents
+     * @return new matrix instance
+     * @throws MatrixException when creation fails
+     */
     protected abstract IMatrix createMatrix(double[][] data) throws MatrixException;
 
+    /**
+     * Compute determinant of the matrix.
+     *
+     * @return determinant value
+     * @throws MatrixException when matrix is not square or invalid
+     */
     public double det() throws MatrixException {
         if(!isSquare() || rows < 1) {
             throw new MatrixException("Matrix must be squeared and not empty");
@@ -78,6 +153,12 @@ public abstract class IMatrix  {
         return createMatrix(data);
     }
 
+    /**
+     * Add another matrix to this matrix (element-wise).
+     *
+     * @param other matrix to add
+     * @throws MatrixException when sizes mismatch or other error
+     */
     public void add(IMatrix other) throws MatrixException {
         if(!isEqualSize(other)) {
             throw new MatrixException("Matrices must be equal in size");
@@ -90,10 +171,22 @@ public abstract class IMatrix  {
         }
     }
 
+    /**
+     * Check if matrices have equal dimensions.
+     *
+     * @param other other matrix
+     * @return true when dimensions are equal
+     */
     public boolean isEqualSize(IMatrix other) {
         return rows == other.getRows() && cols == other.getCols();
     }
 
+    /**
+     * Subtract another matrix from this matrix (element-wise).
+     *
+     * @param other matrix to subtract
+     * @throws MatrixException when sizes mismatch or other error
+     */
     public void substract(IMatrix other) throws MatrixException {
         if(!isEqualSize(other)) {
             throw new MatrixException("Matrices must be equal in size");
@@ -106,6 +199,12 @@ public abstract class IMatrix  {
         }
     }
 
+    /**
+     * Multiply this matrix by another matrix (matrix multiplication).
+     *
+     * @param other right-hand matrix
+     * @throws MatrixException when dimensions are incompatible
+     */
     public void multiply(IMatrix other) throws MatrixException {
         if (cols != other.getRows()) {
             throw new MatrixException("Cannot multiply not compatible matrices");
@@ -126,6 +225,12 @@ public abstract class IMatrix  {
         init(result);
     }
 
+    /**
+     * Multiply matrix by scalar (in-place).
+     *
+     * @param scalar multiplier
+     * @throws MatrixException on error
+     */
     public void multiply(double scalar) throws MatrixException {
         for (int i = 0; i < rows; ++i) {
             for(int j = 0; j < cols; ++j) {
@@ -134,6 +239,11 @@ public abstract class IMatrix  {
         }
     }
 
+    /**
+     * Transpose the matrix in-place.
+     *
+     * @throws MatrixException on error
+     */
     public void transpose() throws MatrixException {
         double[][] transposed = new double[cols][rows];
 
@@ -146,6 +256,12 @@ public abstract class IMatrix  {
         init(transposed);
     }
 
+    /**
+     * Compute trace (sum of diagonal) for square matrices.
+     *
+     * @return trace value
+     * @throws MatrixException if matrix not square
+     */
     public double trace() throws MatrixException {
         if(!isSquare()) {
             throw new MatrixException("Matrix must be squared");
@@ -159,6 +275,11 @@ public abstract class IMatrix  {
         return sum;
     }
 
+    /**
+     * Compute inverse of the matrix (in-place) using Gauss-Jordan elimination.
+     *
+     * @throws MatrixException if matrix is not square or not invertible
+     */
     public void inverse() throws MatrixException {
         if (!isSquare()) {
             throw new MatrixException("Matrix must be squared");
@@ -221,6 +342,12 @@ public abstract class IMatrix  {
         init(inv);
     }
 
+    /**
+     * Convert matrix to a single-line string in format:
+     * {@code "rows cols data..."} where data contains row-major values.
+     *
+     * @return formatted matrix string
+     */
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();

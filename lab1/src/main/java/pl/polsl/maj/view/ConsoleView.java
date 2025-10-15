@@ -3,9 +3,23 @@ package pl.polsl.maj.view;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import pl.polsl.maj.model.IMatrix;
+
+/**
+ * Console implementation of {@link IView} that interacts with the user via
+ * standard input and output. It is responsible for presenting the menu,
+ * reading user choices, parsing matrix input lines and displaying results.
+ * 
+ * @author piotr.maj
+ * @version 1.0.0
+ */
 public class ConsoleView implements IView {
     private final Scanner scanner;
 
+    /**
+     * Create a console view which reads from System.in and writes to
+     * System.out/System.err.
+     */
     public ConsoleView() {
         this.scanner = new Scanner(System.in);
 
@@ -75,22 +89,40 @@ public class ConsoleView implements IView {
         }
     }
 
+    /**
+     * Show an informational message to the user.
+     *
+     * @param message message text to display
+     */
     @Override
     public void showMessage(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Show an error message to the user (sent to stderr).
+     *
+     * @param message error message text
+     */
     @Override
     public void showErrorMessage(String message) {
         System.err.println(message);
     }
 
+    /**
+     * Prompt the user to enter a matrix in a single line using the format
+     * {@code <rows> <cols> <data...>} where data is rows*cols double values
+     * separated by whitespace. The method will keep prompting until a
+     * non-empty line is provided.
+     *
+     * @return raw matrix line as entered by the user
+     * @throws java.util.NoSuchElementException when input stream is closed
+     */
     @Override
     public String getMatrix() {
         System.out.println("Enter matrix in format: <rows> <cols> <data...> (space separated)");
 
         String matrix = "";
-        // read until non-empty line is provided
         while (matrix.isBlank()) {
             if (!scanner.hasNextLine()) {
                 throw new java.util.NoSuchElementException("No line found");
@@ -101,11 +133,21 @@ public class ConsoleView implements IView {
         return matrix;
     }
 
+    /**
+     * Prompt shown before requesting matrix input.
+     */
     @Override
     public void showMatrixCreator() {
         System.out.println("Please input matrix:");
     }
 
+    /**
+     * Display a matrix represented as a single-line string in the format
+     * produced by {@link IMatrix#toString()} ("rows cols data..."). If the
+     * provided string cannot be parsed a brief message is printed.
+     *
+     * @param matrix matrix string to display
+     */
     @Override
     public void showMatrix(String matrix) {
 
@@ -113,6 +155,7 @@ public class ConsoleView implements IView {
 
         if(parts.length < 2) {
             System.out.println("Cannot display matrix");
+            return;
         }
 
         int rows = Integer.parseInt(parts[0]);
@@ -120,6 +163,7 @@ public class ConsoleView implements IView {
 
         if(parts.length != 2 + rows * cols) {
             System.out.println("Cannot display matrix");
+            return;
         }
 
         double[][] data = new double[rows][cols];
@@ -151,6 +195,13 @@ public class ConsoleView implements IView {
         }
     }
 
+    /**
+     * Prompt for and read a scalar value from the user.
+     *
+     * @return parsed scalar value
+     * @throws java.util.NoSuchElementException when input stream is closed
+     * @throws NumberFormatException when provided value cannot be parsed
+     */
     @Override
     public double getScalar() {
         System.out.println();

@@ -6,40 +6,95 @@ import pl.polsl.maj.model.Matrix;
 import pl.polsl.maj.view.IView;
 import pl.polsl.maj.view.MenuOption;
 
+/**
+ * Main controller for the matrix calculator application.
+ * <p>
+ * Coordinates interactions between the view and the matrix model. Responsible
+ * for creating and initializing matrices, delegating operations and handling
+ * user menu choices.
+ * </p>
+ *
+ * @author piotr.maj
+ * @version 1.0.0
+ */
 public class MatrixController {
     private final IView view;
     private final IMatrix matrixA;
     
+    /**
+     * Create a new controller instance.
+     *
+     * @param view   the view implementation used for input/output
+     * @param matrix the matrix model instance to operate on
+     */
     public MatrixController(IView view, IMatrix matrix) {
         this.view = view;
         this.matrixA = matrix;
     }
 
+    /**
+     * Show the application menu using the configured view.
+     */
     public void showMenu() {
         view.showMenu();
     }
 
+    /**
+     * Return the currently held matrix instance.
+     *
+     * @return the primary matrix model
+     */
     public IMatrix getMatrix() {
         return matrixA;
     }
 
+    /**
+     * Ask the view for the next menu option selected by the user.
+     *
+     * @return selected {@link MenuOption}
+     */
     public MenuOption getMenuOption() {
         return view.getMenuOption();
     }
 
+    /**
+     * Display an informational message via the view.
+     *
+     * @param message message text to show
+     */
     public void showMessage(String message) {
         view.showMessage(message);
     }
 
+    /**
+     * Initialize the primary matrix using command-line arguments.
+     * If arguments are empty, the view will be used to collect matrix data.
+     *
+     * @param args command-line arguments representing a matrix
+     */
     public void initMatrix(String[] args) {
         initMatrix(args, this.matrixA);
     }
 
+    /**
+     * Initialize the supplied matrix by prompting the user through the view.
+     *
+     * @param matrix matrix to initialize
+     */
     public void initMatrix(IMatrix matrix) {
         String[] str = {};
         initMatrix(str, matrix);
     }
 
+    /**
+     * Initialize the supplied matrix using either the provided input array or
+     * by asking the view for a matrix specification. The expected format is:
+     * <code>&lt;rows&gt; &lt;cols&gt; &lt;data...&gt;</code> where data is
+     * rows*cols double values.
+     *
+     * @param input  optional string array with matrix tokens
+     * @param matrix matrix to initialize
+     */
     public void initMatrix(String[] input, IMatrix matrix) {
         while (true) {
         try {
@@ -83,6 +138,13 @@ public class MatrixController {
     }
     }
 
+    /**
+     * Handle the given menu option, performing the requested matrix
+     * operation. Any errors are reported through the view.
+     *
+     * @param option menu option to handle
+     * @return {@code true} to continue program loop, {@code false} to exit
+     */
     public boolean handleMenuOption(MenuOption option) {
         if(option == MenuOption.End) {
             view.showMessage("Program closed");
