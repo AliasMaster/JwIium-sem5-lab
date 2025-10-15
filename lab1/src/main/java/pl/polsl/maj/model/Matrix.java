@@ -1,8 +1,8 @@
 package pl.polsl.maj.model;
 
-public class Matrix implements IMatrix {
-    private int rows;
-    private int cols;
+import pl.polsl.maj.exceptions.MatrixException;
+
+public class Matrix extends  IMatrix {
     private double[][] data;
 
     public Matrix() {
@@ -12,9 +12,9 @@ public class Matrix implements IMatrix {
     }
     
     
-    public Matrix(int rows, int cols) {
+    public Matrix(int rows, int cols) throws MatrixException {
         if(rows <= 0 || cols <= 0) {
-            throw new IllegalArgumentException("Invalid rows or cols number");
+            throw new MatrixException("Invalid rows or cols number");
         }
                 
         this.rows = rows;
@@ -22,7 +22,7 @@ public class Matrix implements IMatrix {
         this.data = new double[rows][cols];
     }
     
-    public Matrix(double[][] data) {
+    public Matrix(double[][] data) throws MatrixException {
         this.rows = data.length;
         this.cols = data[0].length;
         
@@ -30,7 +30,7 @@ public class Matrix implements IMatrix {
         
         for(int i = 0; i < rows; ++i) {
             if(data[i].length != cols) {
-                throw new IllegalArgumentException("");
+                throw new MatrixException("Invalid given data");
             }
             
             System.arraycopy(data[i], 0, this.data[i], 0, cols);
@@ -38,9 +38,9 @@ public class Matrix implements IMatrix {
     }
 
     @Override
-    public void init(int rows, int cols) {
+    public void init(int rows, int cols) throws MatrixException {
         if(rows <= 0 || cols <= 0) {
-            throw new IllegalArgumentException("Invalid rows or cols number");
+            throw new MatrixException("Invalid rows or cols number");
         }
                 
         this.rows = rows;
@@ -49,7 +49,7 @@ public class Matrix implements IMatrix {
     }
 
     @Override
-    public void init(double[][] data) {
+    public void init(double[][] data) throws MatrixException {
         this.rows = data.length;
         this.cols = data[0].length;
         
@@ -57,35 +57,31 @@ public class Matrix implements IMatrix {
         
         for(int i = 0; i < rows; ++i) {
             if(data[i].length != cols) {
-                throw new IllegalArgumentException("");
+                throw new MatrixException("Invalid given data");
             }
             
             System.arraycopy(data[i], 0, this.data[i], 0, cols);
         }
     }
-
-    @Override
-    public int getRows() {
-        return rows;
-    }
     
     @Override
-    public int getCols() {
-        return cols;
-    }
-    
-    @Override
-    public double get(int r, int c) {
+    public double get(int r, int c) throws MatrixException {
+        if(r < 0 || c < 0 || c >= cols || r >= rows) {
+            throw new MatrixException("Row or column index out of bounds");
+        }
         return data[r][c];
     }
     
     @Override
-    public void set(int r, int c, double value) {
+    public void set(int r, int c, double value) throws MatrixException {
+        if(r < 0 || c < 0 || c >= cols || r >= rows) {
+            throw new MatrixException("Row or column index out of bounds");
+        }
         data[r][c] = value;
     }
-    
+
     @Override
-    public boolean isSquare() {
-        return rows == cols;
-    }    
+    protected IMatrix createMatrix(double[][] data) throws MatrixException {
+        return new Matrix(data);
+    }
 }
