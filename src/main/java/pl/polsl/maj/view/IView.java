@@ -5,7 +5,7 @@ package pl.polsl.maj.view;
  * may provide console or GUI front-ends.
  * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public interface IView {
     /**
@@ -16,9 +16,9 @@ public interface IView {
     /**
      * Ask user for menu option.
      *
-     * @return selected {@link MenuOption}
+     * @return selected
      */
-    public MenuOption getMenuOption();
+    public String getMenuOption();
 
     /**
      * Show an informational message to the user.

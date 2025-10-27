@@ -5,7 +5,7 @@
  * and reading matrix input.
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 package pl.polsl.maj.view;

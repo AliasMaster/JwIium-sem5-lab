@@ -11,7 +11,7 @@ import pl.polsl.maj.model.IMatrix;
  * reading user choices, parsing matrix input lines and displaying results.
  * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class ConsoleView implements IView {
     private final Scanner scanner;
@@ -41,52 +41,12 @@ public class ConsoleView implements IView {
     }
 
     @Override
-    public MenuOption getMenuOption() {
+    public String getMenuOption() {
         System.out.println();
         System.out.print("Get Option: ");
         String option = scanner.nextLine().trim();
 
-        switch (option) {
-            case "0" -> {
-                return MenuOption.End;
-            }
-
-            case "1" -> {
-                return MenuOption.Determinant;
-            }
-
-            case "2" -> {
-                return MenuOption.MultiplyByScalar;
-            }
-
-            case "3" -> {
-                return MenuOption.Multiply;
-            }
-
-            case "4" -> {
-                return MenuOption.AddMatrix;
-            }
-
-            case "5" -> {
-                return MenuOption.SubractMatrix;
-            }
-
-            case "6" -> {
-                return MenuOption.Transpose;
-            }
-
-            case "7" -> {
-                return MenuOption.Inverse;
-            }
-
-            case "8" -> {
-                return MenuOption.Trace;
-            }
-        
-            default -> {
-                return MenuOption.Invalid;
-            }
-        }
+        return option;
     }
 
     /**

@@ -2,10 +2,18 @@ package pl.polsl.maj.matrixcalculator;
 
 import pl.polsl.maj.controller.*;
 import pl.polsl.maj.model.IMatrix;
-import pl.polsl.maj.model.Matrix;
+import pl.polsl.maj.model.BaseMatrix;
+import pl.polsl.maj.model.operations.MatrixOperations;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleAdd;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleDeterminant;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleInverse;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleMultiply;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleMultiplyByScalar;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleSubstract;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleTrace;
+import pl.polsl.maj.model.operations.simpleoperations.SimpleTranspose;
 import pl.polsl.maj.view.ConsoleView;
 import pl.polsl.maj.view.IView;
-import pl.polsl.maj.view.MenuOption;
 
 /**
  * Entry point for the Matrix Calculator application. Creates the view,
@@ -17,7 +25,7 @@ import pl.polsl.maj.view.MenuOption;
  * &lt;rows&gt; &lt;cols&gt; &lt;data...&gt;.
  * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class MatrixCalculator {
 
@@ -36,8 +44,20 @@ public class MatrixCalculator {
      */
     public static void main(String[] args) {
         IView view = new ConsoleView();
-        IMatrix model = new Matrix();
-        MatrixController controller = new MatrixController(view, model);
+        IMatrix model = new BaseMatrix();
+
+        MatrixOperations calc = new MatrixOperations(
+            new SimpleDeterminant(),
+            new SimpleMultiplyByScalar(),
+            new SimpleMultiply(),
+            new SimpleAdd(),
+            new SimpleSubstract(),
+            new SimpleTranspose(),
+            new SimpleInverse(),
+            new SimpleTrace()
+        );
+
+        MatrixController controller = new MatrixController(view, model, calc);
         
         try {
 
@@ -45,7 +65,7 @@ public class MatrixCalculator {
             
             while (true) { 
                 controller.showMenu();
-                MenuOption option = controller.getMenuOption();
+                String option = controller.getMenuOption();
                 
                 if(!controller.handleMenuOption(option)) {
                     break;

@@ -2,9 +2,9 @@ package pl.polsl.maj.controller;
 
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
-import pl.polsl.maj.model.Matrix;
+import pl.polsl.maj.model.BaseMatrix;
+import pl.polsl.maj.model.operations.MatrixOperations;
 import pl.polsl.maj.view.IView;
-import pl.polsl.maj.view.MenuOption;
 
 /**
  * Main controller for the matrix calculator application.
@@ -15,21 +15,24 @@ import pl.polsl.maj.view.MenuOption;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class MatrixController {
     private final IView view;
-    private final IMatrix matrixA;
+    private IMatrix matrixA;
+    private final MatrixOperations calc;
     
     /**
      * Create a new controller instance.
      *
      * @param view   the view implementation used for input/output
      * @param matrix the matrix model instance to operate on
+     * @param calc   the operations facade providing matrix algorithms
      */
-    public MatrixController(IView view, IMatrix matrix) {
+    public MatrixController(IView view, IMatrix matrix, MatrixOperations calc) {
         this.view = view;
         this.matrixA = matrix;
+        this.calc = calc;
     }
 
     /**
@@ -51,9 +54,9 @@ public class MatrixController {
     /**
      * Ask the view for the next menu option selected by the user.
      *
-     * @return selected {@link MenuOption}
+     * @return selected
      */
-    public MenuOption getMenuOption() {
+    public String getMenuOption() {
         return view.getMenuOption();
     }
 
@@ -145,8 +148,8 @@ public class MatrixController {
      * @param option menu option to handle
      * @return {@code true} to continue program loop, {@code false} to exit
      */
-    public boolean handleMenuOption(MenuOption option) {
-        if(option == MenuOption.End) {
+    public boolean handleMenuOption(String option) {
+        if("0".equals(option)) {
             view.showMessage("Program closed");
             return false;
         }
@@ -154,47 +157,47 @@ public class MatrixController {
         try {
             
             if(null != option) switch (option) {
-                case Determinant -> {
-                    double det = matrixA.det();
-                    view.showMessage("Determinant: ".concat(String.valueOf(Math.scalb(det, 2))));
+                case "1" -> {
+                    double det = calc.determinant(matrixA);
+                    view.showMessage("Determinant: ".concat(String.valueOf(det)));
                 }
-                case Inverse -> {
-                    matrixA.inverse();
+                case "7" -> {
+                    matrixA = calc.inverse(matrixA);
                     view.showMatrix(matrixA.toString());
                 }
-                case Trace -> {
-                    double trace = matrixA.trace();
-                    view.showMessage("Trace: ".concat(String.valueOf(Math.scalb(trace, 2))));
+                case "8" -> {
+                    double trace = calc.trace(matrixA);
+                    view.showMessage("Trace: ".concat(String.valueOf(trace)));
                 }
-                case Transpose -> {
-                    matrixA.transpose();
+                case "6" -> {
+                    matrixA = calc.transpose(matrixA);
                     view.showMatrix(matrixA.toString());
                 }
 
-                case Multiply -> {
-                    IMatrix matrixB = new Matrix();
+                case "3" -> {
+                    IMatrix matrixB = new BaseMatrix();
                     this.initMatrix(matrixB);
-                    matrixA.multiply(matrixB);
+                    matrixA = calc.multiply(matrixA, matrixB);
                     view.showMatrix(matrixA.toString());
                 }
 
-                case SubractMatrix -> {
-                    IMatrix matrixB = new Matrix();
+                case "5" -> {
+                    IMatrix matrixB = new BaseMatrix();
                     this.initMatrix(matrixB);
-                    matrixA.substract(matrixB);
+                    matrixA = calc.substract(matrixA, matrixB);
                     view.showMatrix(matrixA.toString());
                 }
 
-                case AddMatrix -> {
-                    IMatrix matrixB = new Matrix();
+                case "4" -> {
+                    IMatrix matrixB = new BaseMatrix();
                     this.initMatrix(matrixB);
-                    matrixA.add(matrixB);
+                    matrixA = calc.add(matrixA, matrixB);
                     view.showMatrix(matrixA.toString());
                 }
 
-                case MultiplyByScalar -> {
+                case "2" -> {
                     double scalar = view.getScalar();
-                    matrixA.multiply(scalar);
+                    matrixA = calc.multiplyByScalar(matrixA, scalar);
                     view.showMatrix(matrixA.toString());
                 }
 
