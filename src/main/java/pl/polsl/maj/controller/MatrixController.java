@@ -77,6 +77,7 @@ public class MatrixController {
      */
     public void initMatrix(String[] args) {
         initMatrix(args, this.matrixA);
+        view.showMatrix(matrixA.toString());
     }
 
     /**

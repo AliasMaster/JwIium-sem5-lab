@@ -37,7 +37,7 @@ public class ConsoleView implements IView {
         System.out.println("6) Transpose");
         System.out.println("7) Inverse");
         System.out.println("8) Trace");
-        System.out.println("0) End");
+        System.out.println("0) Exit");
     }
 
     @Override

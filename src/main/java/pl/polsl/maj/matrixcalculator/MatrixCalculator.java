@@ -13,6 +13,7 @@ import pl.polsl.maj.model.operations.simpleoperations.SimpleSubstract;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleTrace;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleTranspose;
 import pl.polsl.maj.view.ConsoleView;
+import pl.polsl.maj.view.SwingView;
 import pl.polsl.maj.view.IView;
 
 /**
@@ -43,7 +44,9 @@ public class MatrixCalculator {
      * @param args optional command-line tokens describing the initial matrix
      */
     public static void main(String[] args) {
-        IView view = new ConsoleView();
+        // IView view = new ConsoleView();
+        IView view = new SwingView();
+
         IMatrix model = new BaseMatrix();
 
         MatrixOperations calc = new MatrixOperations(
