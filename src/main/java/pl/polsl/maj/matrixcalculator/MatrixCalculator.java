@@ -1,8 +1,11 @@
 package pl.polsl.maj.matrixcalculator;
 
-import pl.polsl.maj.controller.*;
+import pl.polsl.maj.controller.MatrixController;
+
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.BaseMatrix;
+import pl.polsl.maj.model.ArrayListMatrix;
+
 import pl.polsl.maj.model.operations.MatrixOperations;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleAdd;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleDeterminant;
@@ -12,6 +15,7 @@ import pl.polsl.maj.model.operations.simpleoperations.SimpleMultiplyByScalar;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleSubstract;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleTrace;
 import pl.polsl.maj.model.operations.simpleoperations.SimpleTranspose;
+
 import pl.polsl.maj.view.ConsoleView;
 import pl.polsl.maj.view.SwingView;
 import pl.polsl.maj.view.IView;
@@ -47,7 +51,8 @@ public class MatrixCalculator {
         // IView view = new ConsoleView();
         IView view = new SwingView();
 
-        IMatrix model = new BaseMatrix();
+//        IMatrix model = new BaseMatrix();
+        IMatrix model = new ArrayListMatrix();
 
         MatrixOperations calc = new MatrixOperations(
             new SimpleDeterminant(),
@@ -76,6 +81,7 @@ public class MatrixCalculator {
             }
         } catch(Exception e) {
             view.showErrorMessage(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
