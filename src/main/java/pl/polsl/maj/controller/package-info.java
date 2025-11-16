@@ -6,6 +6,6 @@
  * <p>Primary class: {@link pl.polsl.maj.controller.MatrixController}</p>
  *
  * @author piotr.maj
- * @version 1.0.1
+ * @version 1.0.2
  */
 package pl.polsl.maj.controller;

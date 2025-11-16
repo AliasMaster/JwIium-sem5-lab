@@ -1,5 +1,6 @@
 package pl.polsl.maj.model.operations.simpleoperations;
 
+import lombok.NoArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.operations.IDeterminantAlgorithm;
@@ -13,13 +14,10 @@ import pl.polsl.maj.model.operations.IDeterminantAlgorithm;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
+@NoArgsConstructor
 public class SimpleDeterminant implements IDeterminantAlgorithm {
-
-    /** Create a new instance of the determinant algorithm. */
-    public SimpleDeterminant() {
-    }
 
     /**
      * Compute the determinant of a square matrix.

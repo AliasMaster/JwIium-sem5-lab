@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  * application's parsing logic.</p>
  * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class MatrixCreatorDialog extends JDialog {
     /** Input field for number of rows. */
@@ -41,7 +41,8 @@ public class MatrixCreatorDialog extends JDialog {
     private JScrollPane centerScroll = null;
 
     /** 2D array of text fields used to collect matrix data from the user. */
-    private JTextField[][] dataFields = null;
+    /** 2D-like structure of input fields (row lists). */
+    private java.util.List<java.util.List<JTextField>> dataFields = null;
 
     /** Owner frame used as parent for the modal dialog. */
     private final Frame owner;
@@ -134,14 +135,16 @@ public class MatrixCreatorDialog extends JDialog {
         centerHolder.removeAll();
 
         JPanel gridPanel = new JPanel(new GridLayout(r, c, 4, 4));
-        dataFields = new JTextField[r][c];
+        dataFields = new java.util.ArrayList<>(r);
         for (int i = 0; i < r; i++) {
+            java.util.List<JTextField> row = new java.util.ArrayList<>(c);
             for (int j = 0; j < c; j++) {
                 JTextField tf = new JTextField();
                 tf.setColumns(1);
-                dataFields[i][j] = tf;
+                row.add(tf);
                 gridPanel.add(tf);
             }
+            dataFields.add(row);
         }
 
         centerScroll = new JScrollPane(gridPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -168,7 +171,7 @@ public class MatrixCreatorDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "First click generate", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (dataFields.length != r || dataFields[0].length != c) {
+            if (dataFields.size() != r || dataFields.get(0).size() != c) {
                 int option = JOptionPane.showConfirmDialog(this, "Invalid amount of data?", "Notice", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     onGenerate();
@@ -183,7 +186,7 @@ public class MatrixCreatorDialog extends JDialog {
             sb.append(r).append(" ").append(c);
             for (int i = 0; i < r; i++) {
                 for (int j = 0; j < c; j++) {
-                    String val = dataFields[i][j].getText().trim();
+                    String val = dataFields.get(i).get(j).getText().trim();
                     if (val.isEmpty()) {
                         JOptionPane.showMessageDialog(this, String.format("Field [%d,%d] is empty. All fields cannot be empty.", i+1, j+1), "Error", JOptionPane.ERROR_MESSAGE);
                         return;

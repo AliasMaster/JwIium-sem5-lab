@@ -1,5 +1,6 @@
 package pl.polsl.maj.model.operations.simpleoperations;
 
+import lombok.NoArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.operations.IAddAlgorithm;
@@ -14,13 +15,10 @@ import pl.polsl.maj.model.operations.IAddAlgorithm;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
+@NoArgsConstructor
 public class SimpleAdd implements IAddAlgorithm {
-
-    /** Create a new instance of SimpleAdd. */
-    public SimpleAdd() {
-    }
 
     /**
      * Execute matrix addition.
@@ -43,9 +41,12 @@ public class SimpleAdd implements IAddAlgorithm {
 
         IMatrix newMatrix = a.createSameType(a.getRows(), a.getCols());
 
-        for(int i = 0; i < a.getRows(); ++i) {
-            for(int j = 0; j < a.getCols(); ++j) {
-                newMatrix.set(i, j, a.get(i, j) + b.get(i, j));
+        // use a lambda-based binary operation for addition
+        pl.polsl.maj.model.operations.DoubleBinaryOp addOp = (x, y) -> x + y;
+
+        for (int i = 0; i < a.getRows(); ++i) {
+            for (int j = 0; j < a.getCols(); ++j) {
+                newMatrix.set(i, j, addOp.apply(a.get(i, j), b.get(i, j)));
             }
         }
 

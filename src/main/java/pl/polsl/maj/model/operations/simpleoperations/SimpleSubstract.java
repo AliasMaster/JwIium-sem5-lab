@@ -1,5 +1,6 @@
 package pl.polsl.maj.model.operations.simpleoperations;
 
+import lombok.NoArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.operations.ISubstractAlgorithm;
@@ -12,13 +13,10 @@ import pl.polsl.maj.model.operations.ISubstractAlgorithm;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
+@NoArgsConstructor
 public class SimpleSubstract implements ISubstractAlgorithm {
-
-    /** Create a new instance of SimpleSubstract. */
-    public SimpleSubstract() {
-    }
 
     /**
      * Execute matrix subtraction.

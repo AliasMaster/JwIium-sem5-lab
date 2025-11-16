@@ -1,5 +1,6 @@
 package pl.polsl.maj.controller;
 
+import lombok.AllArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.BaseMatrix;
@@ -15,25 +16,13 @@ import pl.polsl.maj.view.IView;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.1
+ * @version 1.0.2
  */
+@AllArgsConstructor
 public class MatrixController {
     private final IView view;
     private IMatrix matrixA;
     private final MatrixOperations calc;
-    
-    /**
-     * Create a new controller instance.
-     *
-     * @param view   the view implementation used for input/output
-     * @param matrix the matrix model instance to operate on
-     * @param calc   the operations facade providing matrix algorithms
-     */
-    public MatrixController(IView view, IMatrix matrix, MatrixOperations calc) {
-        this.view = view;
-        this.matrixA = matrix;
-        this.calc = calc;
-    }
 
     /**
      * Show the application menu using the configured view.

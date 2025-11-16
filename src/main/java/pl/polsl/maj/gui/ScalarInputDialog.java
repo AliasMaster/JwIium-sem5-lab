@@ -6,11 +6,12 @@ import javax.swing.JOptionPane;
 
 /**
  * Dialog helper that requests a scalar (double) value from the user.
- * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
-public class ScalarInputDialog {
+public final class ScalarInputDialog {
+
+    private ScalarInputDialog() { }
 
     /**
      * Shows a modal input dialog and parses the entered value as {@code double}.
@@ -20,6 +21,7 @@ public class ScalarInputDialog {
      * @param owner the parent frame for the dialog
      * @param title the dialog title
      * @return the parsed Double value or {@code null} when the user cancels
+     * 
      */
     public static Double askScalar(java.awt.Frame owner, String title) {
         while (true) {
@@ -36,12 +38,5 @@ public class ScalarInputDialog {
                 JOptionPane.showMessageDialog(owner, "Invalid format.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-    
-    /**
-     * Utility class - prevent instantiation.
-     */
-    private ScalarInputDialog() {
-        // no instances
     }
 }

@@ -1,5 +1,6 @@
 package pl.polsl.maj.model.operations.simpleoperations;
 
+import lombok.NoArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.operations.ITransposeAlgorithm;
@@ -11,13 +12,10 @@ import pl.polsl.maj.model.operations.ITransposeAlgorithm;
  * </p>
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
+@NoArgsConstructor
 public class SimpleTranspose implements ITransposeAlgorithm {
-
-    /** Create a new SimpleTranspose instance. */
-    public SimpleTranspose() {
-    }
 
     /**
      * Execute transpose of the provided matrix.

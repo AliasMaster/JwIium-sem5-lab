@@ -1,5 +1,6 @@
 package pl.polsl.maj.model.operations.simpleoperations;
 
+import lombok.NoArgsConstructor;
 import pl.polsl.maj.exceptions.MatrixException;
 import pl.polsl.maj.model.IMatrix;
 import pl.polsl.maj.model.operations.IMultiplyAlgorithm;
@@ -16,13 +17,10 @@ import pl.polsl.maj.model.operations.IMultiplyAlgorithm;
  * <strong>Complexity:</strong> O(n * m * k) for an (n x m) × (m x k) multiplication.
  *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
+@NoArgsConstructor
 public class SimpleMultiply implements IMultiplyAlgorithm {
-
-    /** Create a new instance of SimpleMultiply. */
-    public SimpleMultiply() {
-    }
 
     /**
      * Execute matrix multiplication.

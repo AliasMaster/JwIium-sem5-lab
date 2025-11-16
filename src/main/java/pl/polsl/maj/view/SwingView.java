@@ -29,7 +29,7 @@ import pl.polsl.maj.view.IView;
  * are communicated to the controller via internal blocking queues.</p>
  * 
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class SwingView implements IView {
     private final JFrame frame;
@@ -112,37 +112,21 @@ public class SwingView implements IView {
 
         frame.add(btnPanel, BorderLayout.NORTH);
 
-        btnDeterminant.addActionListener(e -> {
-            menuBuffer.offer("1");
-        });
+        btnDeterminant.addActionListener(e -> menuBuffer.offer(OperationCode.DETERMINANT.code()));
 
-        btnScalar.addActionListener(e -> {
-            menuBuffer.offer("2");
-        });
+        btnScalar.addActionListener(e -> menuBuffer.offer(OperationCode.SCALAR.code()));
 
-        btnMultiply.addActionListener(e -> {
-            menuBuffer.offer("3");
-        });
+        btnMultiply.addActionListener(e -> menuBuffer.offer(OperationCode.MULTIPLY.code()));
 
-        btnAdd.addActionListener(e -> {
-            menuBuffer.offer("4");
-        });
+        btnAdd.addActionListener(e -> menuBuffer.offer(OperationCode.ADD.code()));
 
-        btnSubstract.addActionListener(e -> {
-            menuBuffer.offer("5");
-        });
+        btnSubstract.addActionListener(e -> menuBuffer.offer(OperationCode.SUBSTRACT.code()));
 
-        btnTranspose.addActionListener(e -> {
-            menuBuffer.offer("6");
-        });
+        btnTranspose.addActionListener(e -> menuBuffer.offer(OperationCode.TRANSPOSE.code()));
 
-        btnInverse.addActionListener(e -> {
-            menuBuffer.offer("7");
-        });
+        btnInverse.addActionListener(e -> menuBuffer.offer(OperationCode.INVERSE.code()));
 
-        btnTrace.addActionListener(e -> {
-            menuBuffer.offer("8");
-        });
+        btnTrace.addActionListener(e -> menuBuffer.offer(OperationCode.TRACE.code()));
 
         frame.pack();
         frame.setVisible(true);
@@ -216,21 +200,33 @@ public class SwingView implements IView {
 
     private void updateTableFromMatrixString(String matrix) {
         try {
-            String[] tokens = matrix.trim().split("\\s+");
-            if (tokens.length < 3) throw new MatrixException("Invalid matrix format");
-            int rows = Integer.parseInt(tokens[0]);
-            int cols = Integer.parseInt(tokens[1]);
-            if (tokens.length - 2 != rows * cols) throw new MatrixException("Invalid number of elements");
-            Object[][] data = new Object[rows][cols];
+            java.util.List<String> tokens = java.util.Arrays.asList(matrix.trim().split("\\s+"));
+            if (tokens.size() < 3) throw new MatrixException("Invalid matrix format");
+            int rows = Integer.parseInt(tokens.get(0));
+            int cols = Integer.parseInt(tokens.get(1));
+            if (tokens.size() - 2 != rows * cols) throw new MatrixException("Invalid number of elements");
+
+            // build column names and data using collections, then convert to vectors
+            java.util.Vector<java.util.Vector<Object>> tableData = new java.util.Vector<>();
             int idx = 2;
             for (int r = 0; r < rows; r++) {
+                java.util.Vector<Object> rowVec = new java.util.Vector<>();
                 for (int c = 0; c < cols; c++) {
-                    data[r][c] = tokens[idx++];
+                    String valueStr = tokens.get(idx++);
+                    try {
+                        double value = Double.parseDouble(valueStr);
+                        // Format to 3 significant figures
+                        valueStr = String.format("%.3g", value);
+                    } catch (NumberFormatException ignored) {
+                        // Keep original string if not a valid number
+                    }
+                    rowVec.add(valueStr);
                 }
+                tableData.add(rowVec);
             }
-            Object[] colNames = new Object[cols];
-            for (int i = 0; i < cols; i++) colNames[i] = "C" + (i+1);
-            tableModel.setDataVector(data, colNames);
+            java.util.Vector<Object> colNames = new java.util.Vector<>();
+            for (int i = 0; i < cols; i++) colNames.add("C" + (i+1));
+            tableModel.setDataVector(tableData, colNames);
             for (int i = 0; i < table.getColumnCount(); i++) {
                 table.getColumnModel().getColumn(i).setPreferredWidth(80);
             }

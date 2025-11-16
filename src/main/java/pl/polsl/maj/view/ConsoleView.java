@@ -11,7 +11,7 @@ import pl.polsl.maj.model.IMatrix;
  * reading user choices, parsing matrix input lines and displaying results.
  * 
  * @author piotr.maj
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class ConsoleView implements IView {
     private final Scanner scanner;
@@ -111,45 +111,43 @@ public class ConsoleView implements IView {
     @Override
     public void showMatrix(String matrix) {
 
-        String[] parts = matrix.split(Pattern.quote(" "));
+        java.util.List<String> parts = java.util.Arrays.asList(matrix.split(Pattern.quote(" ")));
 
-        if(parts.length < 2) {
+        if(parts.size() < 2) {
+            System.out.println("Cannot display matrix");
+            return;
+        }
+        int rows = Integer.parseInt(parts.get(0));
+        int cols = Integer.parseInt(parts.get(1));
+
+        if(parts.size() != 2 + rows * cols) {
             System.out.println("Cannot display matrix");
             return;
         }
 
-        int rows = Integer.parseInt(parts[0]);
-        int cols = Integer.parseInt(parts[1]);
-
-        if(parts.length != 2 + rows * cols) {
-            System.out.println("Cannot display matrix");
-            return;
-        }
-
-        double[][] data = new double[rows][cols];
+        java.util.List<java.util.List<Double>> data = new java.util.ArrayList<>(rows);
         int index = 2;
-
-        for(int i = 0; i < rows; ++i) {
-            for(int j = 0; j < cols; ++j) {
-                data[i][j] = Double.parseDouble(parts[index++]);
+        for (int i = 0; i < rows; i++) {
+            java.util.List<Double> row = new java.util.ArrayList<>(cols);
+            for (int j = 0; j < cols; j++) {
+                row.add(Double.parseDouble(parts.get(index++)));
             }
+            data.add(row);
         }
 
-        int maxWidth = 0;
-        for(int i = 0; i < rows; ++i) {
-            for(int j = 0; j < cols; ++j) {
-                int len = String.format("%.2f", data[i][j]).length();
-                if(len > maxWidth) maxWidth = len;
-            }
-        }
+        int maxWidth = data.stream()
+                .flatMap(java.util.List::stream)
+                .mapToInt(v -> String.format("%.3g", v).length())
+                .max()
+                .orElse(0);
 
         System.out.println("= Matrix =");
         System.out.println("rows: " + rows);
         System.out.println("columns: " + cols);
 
-        for(int i = 0; i < rows; ++i) {
-            for(int j = 0; j < cols; ++j) {
-                System.out.printf("%" + maxWidth + ".2f ", data[i][j]);
+        for (java.util.List<Double> row : data) {
+            for (Double v : row) {
+                System.out.printf("%" + maxWidth + ".3g ", v);
             }
             System.out.println();
         }

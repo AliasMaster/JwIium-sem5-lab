@@ -7,13 +7,15 @@ import javax.swing.JOptionPane;
 /**
  * Simple message utility for showing modal informational and error dialogs.
  *
- * <p>All methods are static; the class is not instantiable.</p>
- * 
+ * <p>All methods are static; the class is not instantiable. Lombok's
+ * {@code @UtilityClass} annotation is used to enforce utility semantics.</p>
+ *
  * @author piotr.maj
- * @version 1.0.0
+ * @version 1.0.1
  */
-public class MessageUtils {
-    private MessageUtils() {}
+public final class MessageUtils {
+
+    private MessageUtils() { }
 
     /**
      * Shows an informational message dialog.
